@@ -46,6 +46,33 @@ def run(filename):
                           'blue': [0.2, 0.5, 0.5]}]
     reflect = '.white'
 
-    print symbols
+    #print symbols
     for command in commands:
-        print command
+        op = command['op']
+        args = command['args']
+        top = len(stack)-1
+        if op == 'push':
+            stack.append(stack[top][:])
+        elif op == 'pop':
+            stack.pop()
+        elif op == 'move':
+            m = make_translate(args[0],args[1],args[2])
+            matrix_mult(m,stack[top])
+        elif op == 'rotate':
+            m = new_matrix()
+            if args[0] == "x":
+                m = make_rotX(args[1])
+            elif args[0] == "y":
+                m = make_rotY(args[1])
+            elif args[0] == "z":
+                m = make_rotZ(args[1])
+            matrix_mult(m,stack[top])
+        elif op == 'scale':
+            m = make_scale(args[0],args[1],args[2])
+            matrix_mult(m,stack[top])
+        elif op == 'box':
+            p = []
+            add_box(p,args[0],args[1],args[2],args[3],args[4],args[5])
+            matrix_mult(p,stack[top])
+            #draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
+            print command
