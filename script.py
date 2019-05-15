@@ -50,14 +50,13 @@ def run(filename):
     for command in commands:
         op = command['op']
         args = command['args']
-        top = len(stack)-1
         if op == 'push':
-            stack.append(stack[top][:])
+            stack.append(stack[-1][:])
         elif op == 'pop':
             stack.pop()
         elif op == 'move':
             m = make_translate(args[0],args[1],args[2])
-            matrix_mult(m,stack[top])
+            matrix_mult(stack[-1],m)
         elif op == 'rotate':
             m = new_matrix()
             if args[0] == "x":
@@ -66,13 +65,13 @@ def run(filename):
                 m = make_rotY(args[1])
             elif args[0] == "z":
                 m = make_rotZ(args[1])
-            matrix_mult(m,stack[top])
+            matrix_mult(stack[-1],m)
         elif op == 'scale':
             m = make_scale(args[0],args[1],args[2])
-            matrix_mult(m,stack[top])
+            matrix_mult(stack[-1],m)
         elif op == 'box':
             p = []
             add_box(p,args[0],args[1],args[2],args[3],args[4],args[5])
-            matrix_mult(p,stack[top])
+            matrix_mult(p,stack[-1])
             #draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
             print command
