@@ -75,19 +75,32 @@ def run(filename):
             stack[-1] = m
         elif op == 'box':
             p = []
+            cons = command['constants']
+            print command
             add_box(p,args[0],args[1],args[2],args[3],args[4],args[5])
             matrix_mult(stack[-1],p)
-            draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            if cons != None:
+                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
+            else:
+                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
         elif op == 'sphere':
             p = []
+            cons = command['constants']
             add_sphere(p,args[0],args[1],args[2],args[3],step_3d)
             matrix_mult(stack[-1],p)
-            draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            if cons != None:
+                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
+            else:
+                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
         elif op == 'torus':
             p = []
+            cons = command['constants']
             add_torus(p,args[0],args[1],args[2],args[3],args[4],step_3d)
             matrix_mult(stack[-1],p)
-            draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            if cons != None:
+                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
+            else:
+                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
         elif op == 'line':
             e = []
             add_edge(e, args[0],args[1],args[2],args[3],args[4],args[5])
