@@ -84,5 +84,12 @@ def run(filename):
             add_torus(p,args[0],args[1],args[2],args[3],args[4],step_3d)
             matrix_mult(stack[-1],p)
             draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
-            
-            print command
+        elif op == 'line':
+            e = []
+            add_edge(e, args[0],args[1],args[2],args[3],args[4],args[5])
+            matrix_mult(stack[-1],e)
+            draw_lines(e,screen,zbuffer,color)
+        elif op == 'save':
+            save_extension(screen, args[0])
+        elif op == 'display':
+            display(screen)
