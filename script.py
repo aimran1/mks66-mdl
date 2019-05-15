@@ -56,28 +56,28 @@ def run(filename):
         elif op == 'pop':
             stack.pop()
         elif op == 'move':
-            m = make_translate(args[0],args[1],args[2])
+            m = make_translate(float(args[0]),float(args[1]),float(args[2]))
             matrix_mult(stack[-1],m)
             stack[-1] = m
         elif op == 'rotate':
             m = new_matrix()
+            a = float(args[1]) * (math.pi/180)
             if args[0] == "x":
-                m = make_rotX(args[1])
+                m = make_rotX(a)
             elif args[0] == "y":
-                m = make_rotY(args[1])
+                m = make_rotY(a)
             elif args[0] == "z":
-                m = make_rotZ(args[1])
+                m = make_rotZ(a)
             matrix_mult(stack[-1],m)
             stack[-1] = m
         elif op == 'scale':
-            m = make_scale(args[0],args[1],args[2])
+            m = make_scale(float(args[0]),float(args[1]),float(args[2]))
             matrix_mult(stack[-1],m)
             stack[-1] = m
         elif op == 'box':
             p = []
             cons = command['constants']
-            print command
-            add_box(p,args[0],args[1],args[2],args[3],args[4],args[5])
+            add_box(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),float(args[5]))
             matrix_mult(stack[-1],p)
             if cons != None:
                 draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
@@ -86,7 +86,7 @@ def run(filename):
         elif op == 'sphere':
             p = []
             cons = command['constants']
-            add_sphere(p,args[0],args[1],args[2],args[3],step_3d)
+            add_sphere(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),step_3d)
             matrix_mult(stack[-1],p)
             if cons != None:
                 draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
@@ -95,7 +95,7 @@ def run(filename):
         elif op == 'torus':
             p = []
             cons = command['constants']
-            add_torus(p,args[0],args[1],args[2],args[3],args[4],step_3d)
+            add_torus(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),step_3d)
             matrix_mult(stack[-1],p)
             if cons != None:
                 draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
@@ -103,7 +103,7 @@ def run(filename):
                 draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
         elif op == 'line':
             e = []
-            add_edge(e, args[0],args[1],args[2],args[3],args[4],args[5])
+            add_edge(e, float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),float(args[5]))
             matrix_mult(stack[-1],e)
             draw_lines(e,screen,zbuffer,color)
         elif op == 'save':
