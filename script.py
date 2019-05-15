@@ -72,6 +72,17 @@ def run(filename):
         elif op == 'box':
             p = []
             add_box(p,args[0],args[1],args[2],args[3],args[4],args[5])
-            matrix_mult(p,stack[-1])
-            #draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect)
+            matrix_mult(stack[-1],p)
+            draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+        elif op == 'sphere':
+            p = []
+            add_sphere(p,args[0],args[1],args[2],args[3],step_3d)
+            matrix_mult(stack[-1],p)
+            draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+        elif op == 'torus':
+            p = []
+            add_torus(p,args[0],args[1],args[2],args[3],args[4],step_3d)
+            matrix_mult(stack[-1],p)
+            draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            
             print command
