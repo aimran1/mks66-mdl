@@ -51,12 +51,14 @@ def run(filename):
         op = command['op']
         args = command['args']
         if op == 'push':
-            stack.append(stack[-1][:])
+            copy = stack[-1][:]
+            stack.append(copy)
         elif op == 'pop':
             stack.pop()
         elif op == 'move':
             m = make_translate(args[0],args[1],args[2])
             matrix_mult(stack[-1],m)
+            stack[-1] = m
         elif op == 'rotate':
             m = new_matrix()
             if args[0] == "x":
@@ -66,9 +68,11 @@ def run(filename):
             elif args[0] == "z":
                 m = make_rotZ(args[1])
             matrix_mult(stack[-1],m)
+            stack[-1] = m
         elif op == 'scale':
             m = make_scale(args[0],args[1],args[2])
             matrix_mult(stack[-1],m)
+            stack[-1] = m
         elif op == 'box':
             p = []
             add_box(p,args[0],args[1],args[2],args[3],args[4],args[5])
