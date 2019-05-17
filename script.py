@@ -49,15 +49,18 @@ def run(filename):
     for command in commands:
         op = command['op']
         args = command['args']
+        cs = stack
+        if 'cs' in command and command['cs'] != None:
+            cs = command['cs']
         if op == 'push':
-            copy = stack[-1][:]
-            stack.append(copy)
+            copy = cs[-1][:]
+            cs.append(copy)
         elif op == 'pop':
-            stack.pop()
+            cs.pop()
         elif op == 'move':
             m = make_translate(float(args[0]),float(args[1]),float(args[2]))
-            matrix_mult(stack[-1],m)
-            stack[-1] = m
+            matrix_mult(cs[-1],m)
+            cs[-1] = m
         elif op == 'rotate':
             m = new_matrix()
             a = float(args[1]) * (math.pi/180)
@@ -67,43 +70,52 @@ def run(filename):
                 m = make_rotY(a)
             elif args[0] == "z":
                 m = make_rotZ(a)
-            matrix_mult(stack[-1],m)
-            stack[-1] = m
+            matrix_mult(cs[-1],m)
+            cs[-1] = m
         elif op == 'scale':
             m = make_scale(float(args[0]),float(args[1]),float(args[2]))
-            matrix_mult(stack[-1],m)
-            stack[-1] = m
+            matrix_mult(cs[-1],m)
+            cs[-1] = m
         elif op == 'box':
-            p = []
-            cons = command['constants']
-            add_box(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),float(args[5]))
-            matrix_mult(stack[-1],p)
-            if cons != None:
-                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
-            else:
-                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            try:
+                p = []
+                cons = command['constants']
+                add_box(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),float(args[5]))
+                matrix_mult(cs[-1],p)
+                if cons != None:
+                    draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
+                else:
+                    draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            except:
+                continue
         elif op == 'sphere':
-            p = []
-            cons = command['constants']
-            add_sphere(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),step_3d)
-            matrix_mult(stack[-1],p)
-            if cons != None:
-                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
-            else:
-                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            try:
+                p = []
+                cons = command['constants']
+                add_sphere(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),step_3d)
+                matrix_mult(cs[-1],p)
+                if cons != None:
+                    draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
+                else:
+                    draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            except:
+                continue
         elif op == 'torus':
-            p = []
-            cons = command['constants']
-            add_torus(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),step_3d)
-            matrix_mult(stack[-1],p)
-            if cons != None:
-                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
-            else:
-                draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            try:
+                p = []
+                cons = command['constants']
+                add_torus(p,float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),step_3d)
+                matrix_mult(cs[-1],p)
+                if cons != None:
+                    draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, cons)
+                else:
+                    draw_polygons( p, screen, zbuffer, view, ambient, light, symbols, reflect)
+            except:
+                continue
         elif op == 'line':
             e = []
             add_edge(e, float(args[0]),float(args[1]),float(args[2]),float(args[3]),float(args[4]),float(args[5]))
-            matrix_mult(stack[-1],e)
+            matrix_mult(cs[-1],e)
             draw_lines(e,screen,zbuffer,color)
         elif op == 'save':
             save_extension(screen, args[0])
